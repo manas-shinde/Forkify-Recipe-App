@@ -8,6 +8,15 @@ const timeout = function(s) {
 };
 // https://forkify-api.herokuapp.com/v2
 ///////////////////////////////////////
-console.log("Test");
+const fetchRecipes = async ()=>{
+    try {
+        const recipeText = await fetch(`https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886`);
+        const dataJson = await recipeText.json();
+        console.log(dataJson);
+    } catch (error) {
+        console.warn(error);
+    }
+};
+fetchRecipes();
 
 //# sourceMappingURL=index.62406edb.js.map
