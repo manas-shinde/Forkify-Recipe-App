@@ -1,4 +1,6 @@
 import icons from '../img/icons.svg';
+import 'core-js/stable';
+import 'regenerator-runtime/runtime';
 
 const recipeContainer = document.querySelector('.recipe');
 
@@ -13,11 +15,30 @@ const timeout = function (s) {
 // https://forkify-api.herokuapp.com/v2
 
 ///////////////////////////////////////
+const renderSpinner = parentEl => {
+  const markup = `
+    <div class="spinner">
+      <svg>
+        <use href="${icons}#icon-loader"></use>
+      </svg>
+    </div> 
+  `;
+  parentEl.innerHTML = '';
+  parentEl.insertAdjacentHTML('afterbegin', markup);
+};
+
 const fetchRecipes = async () => {
   try {
-    // Fetch and load recipe object
+    renderSpinner(recipeContainer);
+
+    // Fetch and load selected recipe
+
+    const recipeId = window.location.hash.slice(1);
+
+    if (!recipeId) return;
+
     const fetchRecipe = await fetch(
-      `https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bc886`
+      `https://forkify-api.herokuapp.com/api/v2/recipes/${recipeId}`
     );
 
     const data = await fetchRecipe.json();
@@ -44,7 +65,7 @@ const fetchRecipes = async () => {
 
     const markup = `
     <figure class="recipe__fig">
-    <img src="${recipe.image_url}" alt="${recipe.title}" class="recipe__img" />
+    <img src="${recipe.image}" alt="${recipe.title}" class="recipe__img" />
     <h1 class="recipe__title">
       <span>${recipe.title}</span>
     </h1>
@@ -146,4 +167,4 @@ const fetchRecipes = async () => {
   }
 };
 
-fetchRecipes();
+['hashchange', 'load'].forEach(ev => window.addEventListener(ev, fetchRecipes));
