@@ -4,11 +4,21 @@ import { Fraction } from 'fractional';
 class RecipeView {
   #parentElement = document.querySelector('.recipe');
   #data;
+  #errorMessage = `No recipes found for your query. Please try again!`;
 
   addHanderReder(handler) {
     ['hashchange', 'load'].forEach(ev => window.addEventListener(ev, handler));
   }
 
+  render(data) {
+    this.#data = data;
+
+    const markup = this._generateMarkup();
+
+    this.#cleanup();
+
+    this.#parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
   renderSpinner() {
     const markup = `
       <div class="spinner">
@@ -21,10 +31,16 @@ class RecipeView {
     this.#parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
-  render(data) {
-    this.#data = data;
-
-    const markup = this._generateMarkup();
+  renderError(errorMsg = this.#errorMessage) {
+    const markup = `
+    <div class="error">
+        <div>
+            <svg>
+                <use href="${icons}#icon-alert-triangle"></use>
+            </svg>
+        </div>
+        <p>${errorMsg}</p>
+    </div> `;
 
     this.#cleanup();
 
