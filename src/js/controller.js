@@ -3,8 +3,8 @@ import 'regenerator-runtime/runtime';
 
 import * as model from './model.js';
 import recipeView from './views/recipeView.js';
-
-const recipeContainer = document.querySelector('.recipe');
+import searchView from './views/searchView.js';
+import resultView from './views/resultView.js';
 
 const controlRecipe = async () => {
   try {
@@ -22,8 +22,29 @@ const controlRecipe = async () => {
   }
 };
 
+const controlSearchResult = async () => {
+  try {
+    resultView.renderSpinner();
+
+    // 1.Get search query
+    const query = await searchView.getQuery();
+
+    if (!query) return;
+
+    // 2.Load the list of recipes
+    await model.loadSearchRecipes(query);
+
+    // 3.Render recipes
+    console.log(model.state.serach.result);
+    resultView.render(model.state.serach.result);
+  } catch (err) {
+    console.warn(err);
+  }
+};
+
 const init = () => {
   recipeView.addHanderReder(controlRecipe);
+  searchView.addHandlerSearch(controlSearchResult);
 };
 
 init();
