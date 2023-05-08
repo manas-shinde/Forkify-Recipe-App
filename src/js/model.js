@@ -55,6 +55,14 @@ export const loadSearchRecipes = async query => {
   }
 };
 
+export const updateServings = newServing => {
+  state.recipe.ingredients.forEach(
+    ing => (ing.quantity = (ing.quantity * newServing) / state.recipe.servings)
+  );
+
+  state.recipe.servings = newServing;
+};
+
 export const getSearchResultPage = (page = state.currentPage) => {
   state.search.currentPage = page;
 
