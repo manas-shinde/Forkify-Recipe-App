@@ -13,6 +13,9 @@ const controlRecipe = async () => {
     if (!recipeId) return;
     // Render spinner animation while fetching that recipe
     recipeView.renderSpinner();
+
+    resultView.update(model.getSearchResultPage());
+
     // Load the recipe
     await model.loadRecipe(recipeId);
     // Render the recipe
@@ -53,8 +56,17 @@ const controlPagination = goToPage => {
   paginationView.render(model.state.search);
 };
 
+const controlServing = newServing => {
+  model.updateServings(newServing);
+
+  // recipeView.render(model.state.recipe);
+
+  recipeView.update(model.state.recipe);
+};
+
 const init = () => {
   recipeView.addHanderReder(controlRecipe);
+  recipeView.addHanderUpdateServing(controlServing);
   searchView.addHandlerSearch(controlSearchResult);
   paginationView.addHandlerPagination(controlPagination);
 };

@@ -49,10 +49,19 @@ export const loadSearchRecipes = async query => {
         image: recipe.image_url,
       };
     });
+    state.search.currentPage = 1;
   } catch (error) {
     console.error(error);
     throw error;
   }
+};
+
+export const updateServings = newServing => {
+  state.recipe.ingredients.forEach(
+    ing => (ing.quantity = (ing.quantity * newServing) / state.recipe.servings)
+  );
+
+  state.recipe.servings = newServing;
 };
 
 export const getSearchResultPage = (page = state.currentPage) => {

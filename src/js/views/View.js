@@ -2,7 +2,28 @@ import icons from '../../img/icons.svg';
 
 export default class View {
   _data;
+  update(data) {
+    this._data = data;
+    const newMarkup = this._generateMarkup();
 
+    const newDom = document.createRange().createContextualFragment(newMarkup);
+    const newELs = Array.from(newDom.querySelectorAll('*'));
+    const currEls = Array.from(this._parentElement.querySelectorAll('*'));
+
+    newELs.forEach((el, i) => {
+      const curEl = currEls[i];
+
+      if (!el.isEqualNode(curEl) && el.firstChild?.nodeValue.trim() !== '') {
+        curEl.textContent = el.textContent;
+      }
+
+      if (!el.isEqualNode(curEl)) {
+        Array.from(el.attributes).forEach(att =>
+          curEl.setAttribute(att.name, att.value)
+        );
+      }
+    });
+  }
   render(data) {
     if (!data || (Array.isArray(data) && data.length == 0))
       return this.renderError();
