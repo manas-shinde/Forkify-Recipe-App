@@ -13,6 +13,9 @@ const controlRecipe = async () => {
     if (!recipeId) return;
     // Render spinner animation while fetching that recipe
     recipeView.renderSpinner();
+
+    resultView.update(model.getSearchResultPage());
+
     // Load the recipe
     await model.loadRecipe(recipeId);
     // Render the recipe
