@@ -6,6 +6,7 @@ import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import resultView from './views/resultView.js';
 import paginationView from './views/paginationView.js';
+import bookmarkView from './views/bookmarkView.js';
 
 const controlRecipe = async () => {
   try {
@@ -65,9 +66,15 @@ const controlServing = newServing => {
 };
 
 const controlBookmark = () => {
+  // Update the bookmark status
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
   else model.removeBookmark(model.state.recipe.id);
+
+  // Render updated bookmark status
   recipeView.update(model.state.recipe);
+
+  // Render bookmark view
+  bookmarkView.render(model.state.bookmarks);
 };
 const init = () => {
   recipeView.addHanderReder(controlRecipe);
