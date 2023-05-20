@@ -30,7 +30,7 @@ export const loadRecipe = async recipeId => {
       cookingTime: recipe.cooking_time,
       ingredients: recipe.ingredients,
     };
-    if (state.bookmarks.some(bookmark => bookmark.id == id))
+    if (state.bookmarks.some(bookmark => bookmark.id == recipe.id))
       state.recipe.bookmarked = true;
     else state.recipe.bookmarked = false;
 
