@@ -15,7 +15,11 @@ const controlRecipe = async () => {
     // Render spinner animation while fetching that recipe
     recipeView.renderSpinner();
 
+    // 0) Update results view to mark selected search result
     resultView.update(model.getSearchResultPage());
+
+    // 1) Updating bookmarks view
+    bookmarkView.update(model.state.bookmarks);
 
     // Load the recipe
     await model.loadRecipe(recipeId);
@@ -76,7 +80,13 @@ const controlBookmark = () => {
   // Render bookmark view
   bookmarkView.render(model.state.bookmarks);
 };
+
+const controlBookmarks = function () {
+  bookmarkView.render(model.state.bookmarks);
+};
+
 const init = () => {
+  bookmarkView.addHandlerRender(controlBookmarks);
   recipeView.addHanderReder(controlRecipe);
   recipeView.addHanderUpdateServing(controlServing);
   recipeView.addHanderBookmark(controlBookmark);
